@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tłumaczenia Społecznościowe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f72585;
+            --creator-color: #ffd700;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .left-column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .right-column {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .language-selectors {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .language-selector {
+            flex: 1;
+        }
+
+        .words-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .word-item {
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .word-item:hover {
+            transform: translateX(5px);
+            background-color: #f0f4ff;
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .word-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .word-lang {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .translations-list {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .translation-item {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid #eee;
+        }
+
+        .translation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .translation-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .translation-lang {
+            background-color: #e9ecef;
+            color: var(--dark-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .translation-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .vote-count {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .vote-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .vote-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .vote-btn.active {
+            color: var(--primary-color);
+        }
+
+        .creator-vote {
+            color: var(--creator-color);
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .moderation-panel {
+            background-color: #fff8e1;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .moderation-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .pending-item {
+            background-color: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .creator-badge {
+            background-color: var(--creator-color);
+            color: var(--dark-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .additional-explanation {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            color: #666;
+            border-left: 3px solid #ccc;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #777;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #888;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .language-selectors {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> Tłumaczenia Społecznościowe</h1>
+            <p>Wspólnie tłumaczmy słowa i zwroty między językami</p>
+        </header>
+
+        <div class="language-selectors">
+            <div class="language-selector">
+                <label for="source-lang">Tłumacz z języka:</label>
+                <select id="source-lang">
+                    <option value="en">Angielski (EN)</option>
+                    <option value="pl">Polski (PL)</option>
+                    <option value="de">Niemiecki (DE)</option>
+                    <option value="fr">Francuski (FR)</option>
+                    <option value="es">Hiszpański (ES)</option>
+                    <option value="it">Włoski (IT)</option>
+                </select>
+            </div>
+            <div class="language-selector">
+                <label for="target-lang">Tłumacz na język:</label>
+                <select id="target-lang">
+                    <option value="pl">Polski (PL)</option>
+                    <option value="en">Angielski (EN)</option>
+                    <option value="de">Niemiecki (DE)</option>
+                    <option value="fr">Francuski (FR)</option>
+                    <option value="es">Hiszpański (ES)</option>
+                    <option value="it">Włoski (IT)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="card">
+                    <h2><i class="fas fa-plus-circle"></i> Dodaj nowe słowo/zwrot</h2>
+                    <form id="add-word-form">
+                        <div class="form-group">
+                            <label for="word-text">Słowo lub zwrot:</label>
+                            <input type="text" id="word-text" placeholder="np. vessel, kissable, larger than life" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="word-explanation">Wyjaśnienie/kontekst (opcjonalnie):</label>
+                            <textarea id="word-explanation" placeholder="Możesz dodać wyjaśnienie lub kontekst użycia..."></textarea>
+                        </div>
+                        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Prześlij do moderacji</button>
+                    </form>
+                </div>
+
+                <div class="card moderation-panel">
+                    <h2><i class="fas fa-user-shield"></i> Panel moderacji (Twórca)</h2>
+                    <div class="tabs">
+                        <div class="tab active" data-tab="pending">Oczekujące</div>
+                        <div class="tab" data-tab="all">Wszystkie</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="pending-tab">
+                        <div id="pending-words-list" class="words-list"></div>
+                    </div>
+                    
+                    <div class="tab-content" id="all-tab">
+                        <div id="all-words-list" class="words-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card">
+                    <h2><i class="fas fa-list"></i> Zaakceptowane słowa/zwroty</h2>
+                    <div id="accepted-words-list" class="words-list"></div>
+                </div>
+
+                <div class="card" id="word-details" style="display: none;">
+                    <h2><i class="fas fa-info-circle"></i> Szczegóły słowa/zwrotu</h2>
+                    <div id="selected-word-details"></div>
+                    
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-comment-alt"></i> Zaproponuj tłumaczenie</h3>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <input type="text" id="translation-text" placeholder="Twoje tłumaczenie..." style="flex: 1;">
+                            <button id="add-translation-btn" class="btn"><i class="fas fa-plus"></i> Dodaj</button>
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label for="additional-explanation">Dodatkowe wyjaśnienie (opcjonalnie):</label>
+                            <textarea id="additional-explanation" placeholder="Np. to słowo oznacza ucieleśnienie się czyjejś duszy w czyimś ciele..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Strona do crowdsourcingu tłumaczeń &copy; 2023 | Głos twórcy strony jest oznaczony <span class="creator-badge">Twórca</span></p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Dane są przechowywane lokalnie w przeglądarce. W wersji produkcyjnej potrzebny byłby backend z bazą danych.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Dane demonstracyjne - w rzeczywistej aplikacji byłyby pobierane z serwera
+        let words = [
+            {
+                id: 1,
+                text: "vessel",
+                sourceLang: "en",
+                targetLang: "pl",
+                explanation: "",
+                status: "accepted",
+                createdAt: "2023-10-15",
+                createdBy: "użytkownik123",
+                translations: [
+                    {
+                        id: 1,
+                        text: "wesel",
+                        explanation: "oznacza ucieleśnienie się czyjejś duszy w czyimś ciele nie zastępując jego duszy a współżyjąc z nią",
+                        votes: 5,
+                        creatorVote: true,
+                        createdBy: "tłumacz456"
+                    },
+                    {
+                        id: 2,
+                        text: "naczynie",
+                        explanation: "",
+                        votes: 2,
+                        creatorVote: false,
+                        createdBy: "użytkownik789"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "kissable",
+                sourceLang: "en",
+                targetLang: "pl",
+                explanation: "",
+                status: "accepted",
+                createdAt: "2023-10-16",
+                createdBy: "user_anna",
+                translations: [
+                    {
+                        id: 3,
+                        text: "pocałunkowy",
+                        explanation: "",
+                        votes: 8,
+                        creatorVote: true,
+                        createdBy: "tłumacz_jan"
+                    },
+                    {
+                        id: 4,
+                        text: "nadający się do pocałowania",
+                        explanation: "",
+                        votes: 3,
+                        creatorVote: false,
+                        createdBy: "użytkownikXYZ"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "larger than life",
+                sourceLang: "en",
+                targetLang: "pl",
+                explanation: "wyrażenie opisujące kogoś lub coś wyjątkowego, imponującego",
+                status: "accepted",
+                createdAt: "2023-10-17",
+                createdBy: "english_lover",
+                translations: [
+                    {
+                        id: 5,
+                        text: "przerastający oczekiwania",
+                        explanation: "",
+                        votes: 7,
+                        creatorVote: true,
+                        createdBy: "poliglota88"
+                    },
+                    {
+                        id: 6,
+                        text: "większy niż życie",
+                        explanation: "dosłowne tłumaczenie, również używane",
+                        votes: 4,
+                        creatorVote: false,
+                        createdBy: "tłumacz_nowy"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                text: "serendipity",
+                sourceLang: "en",
+                targetLang: "pl",
+                explanation: "szczęśliwy traf, przypadkowe odkrycie czegoś wartościowego",
+                status: "pending",
+                createdAt: "2023-10-18",
+                createdBy: "word_explorer",
+                translations: []
+            }
+        ];
+
+        // Pobierz ustawienia z localStorage lub ustaw domyślne
+        let currentUser = localStorage.getItem('translationAppUser') || 'anonymous_' + Math.floor(Math.random() * 10000);
+        let userVotes = JSON.parse(localStorage.getItem('userVotes')) || {};
+        let selectedWordId = null;
+
+        // Inicjalizacja aplikacji
+        document.addEventListener('DOMContentLoaded', function() {
+            // Zapisz użytkownika jeśli nie istnieje
+            if (!localStorage.getItem('translationAppUser')) {
+                localStorage.setItem('translationAppUser', currentUser);
+            }
+            
+            // Ustaw nasłuchiwanie zdarzeń
+            setupEventListeners();
+            
+            // Załaduj dane
+            loadAcceptedWords();
+            loadPendingWords();
+            loadAllWords();
+            
+            // Wyświetl komunikat powitalny dla twórcy
+            if (currentUser === 'creator') {
+                showCreatorMessage();
+            }
+        });
+
+        // Konfiguracja nasłuchiwania zdarzeń
+        function setupEventListeners() {
+            // Formularz dodawania nowego słowa
+            document.getElementById('add-word-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewWord();
+            });
+            
+            // Przycisk dodawania tłumaczenia
+            document.getElementById('add-translation-btn').addEventListener('click', addTranslation);
+            
+            // Filtry językowe
+            document.getElementById('source-lang').addEventListener('change', loadAcceptedWords);
+            document.getElementById('target-lang').addEventListener('change', loadAcceptedWords);
+            
+            // Taby w panelu moderacji
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        }
+
+        // Ładowanie zaakceptowanych słów
+        function loadAcceptedWords() {
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+            
+            const acceptedWords = words.filter(word => 
+                word.status === 'accepted' && 
+                word.sourceLang === sourceLang && 
+                word.targetLang === targetLang
+            );
+            
+            const container = document.getElementById('accepted-words-list');
+            
+            if (acceptedWords.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>Brak zaakceptowanych słów</h3>
+                        <p>Dodaj nowe słowo lub zmień filtr językowy</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            acceptedWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                wordElement.dataset.id = word.id;
+                
+                let translationsHtml = '';
+                if (word.translations && word.translations.length > 0) {
+                    // Sortuj tłumaczenia według liczby głosów (malejąco)
+                    const sortedTranslations = [...word.translations].sort((a, b) => b.votes - a.votes);
+                    
+                    translationsHtml = '<div class="translations-list">';
+                    sortedTranslations.forEach(trans => {
+                        const userHasVoted = userVotes[trans.id] || false;
+                        const creatorVoteBadge = trans.creatorVote ? ' <span class="creator-badge">Twórca</span>' : '';
+                        
+                        translationsHtml += `
+                            <div class="translation-item">
+                                <div class="translation-header">
+                                    <div class="translation-text">${trans.text}</div>
+                                    <div class="translation-lang">${getLanguageName(word.targetLang)}</div>
+                                </div>
+                                ${trans.explanation ? `<div class="additional-explanation">${trans.explanation}</div>` : ''}
+                                <div class="translation-actions">
+                                    <button class="vote-btn ${userHasVoted ? 'active' : ''}" data-translation-id="${trans.id}">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </button>
+                                    <div class="vote-count">${trans.votes}</div>
+                                    ${creatorVoteBadge}
+                                    <div style="margin-left: auto; font-size: 0.8rem; color: #777;">
+                                        dodane przez: ${trans.createdBy}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    translationsHtml += '</div>';
+                }
+                
+                wordElement.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-text">${word.text}</div>
+                        <div class="word-lang">${getLanguageName(word.sourceLang)} → ${getLanguageName(word.targetLang)}</div>
+                    </div>
+                    ${word.explanation ? `<p><i>${word.explanation}</i></p>` : ''}
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                        Dodane przez: ${word.createdBy} • ${word.createdAt}
+                    </div>
+                    ${translationsHtml}
+                `;
+                
+                // Dodaj obsługę kliknięcia na słowo
+                wordElement.addEventListener('click', function(e) {
+                    if (!e.target.closest('.vote-btn') && !e.target.closest('.translation-item')) {
+                        selectWord(word.id);
+                    }
+                });
+                
+                // Dodaj obsługę głosowania
+                wordElement.querySelectorAll('.vote-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const translationId = parseInt(this.getAttribute('data-translation-id'));
+                        voteForTranslation(translationId);
+                    });
+                });
+                
+                container.appendChild(wordElement);
+            });
+        }
+
+        // Ładowanie słów oczekujących na moderację
+        function loadPendingWords() {
+            const pendingWords = words.filter(word => word.status === 'pending');
+            const container = document.getElementById('pending-words-list');
+            
+            if (pendingWords.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Brak słów oczekujących</h3>
+                        <p>Wszystkie słowa zostały zweryfikowane</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            pendingWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item pending-item';
+                wordElement.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-text">${word.text}</div>
+                        <div class="word-lang">${getLanguageName(word.sourceLang)} → ${getLanguageName(word.targetLang)}</div>
+                    </div>
+                    ${word.explanation ? `<p><i>${word.explanation}</i></p>` : ''}
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                        Dodane przez: ${word.createdBy} • ${word.createdAt}
+                    </div>
+                    <div class="moderation-actions">
+                        <button class="btn btn-success btn-accept" data-id="${word.id}">
+                            <i class="fas fa-check"></i> Zaakceptuj
+                        </button>
+                        <button class="btn btn-danger btn-reject" data-id="${word.id}">
+                            <i class="fas fa-times"></i> Odrzuć
+                        </button>
+                    </div>
+                `;
+                
+                // Dodaj obsługę przycisków moderacji
+                wordElement.querySelector('.btn-accept').addEventListener('click', function() {
+                    acceptWord(word.id);
+                });
+                
+                wordElement.querySelector('.btn-reject').addEventListener('click', function() {
+                    rejectWord(word.id);
+                });
+                
+                container.appendChild(wordElement);
+            });
+        }
+
+        // Ładowanie wszystkich słów (dla panelu twórcy)
+        function loadAllWords() {
+            const container = document.getElementById('all-words-list');
+            const allWords = [...words].sort((a, b) => {
+                if (a.status === b.status) return b.id - a.id;
+                return a.status === 'pending' ? -1 : 1;
+            });
+            
+            if (allWords.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>Brak słów w systemie</h3>
+                        <p>Dodaj pierwsze słowo do tłumaczenia</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            allWords.forEach(word => {
+                const statusClass = word.status === 'pending' ? 'status-pending' : 'status-accepted';
+                const statusText = word.status === 'pending' ? 'Oczekujące' : 'Zaakceptowane';
+                
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                wordElement.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-text">${word.text}</div>
+                        <div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            <div class="word-lang">${getLanguageName(word.sourceLang)} → ${getLanguageName(word.targetLang)}</div>
+                        </div>
+                    </div>
+                    ${word.explanation ? `<p><i>${word.explanation}</i></p>` : ''}
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                        Dodane przez: ${word.createdBy} • ${word.createdAt} • ID: ${word.id}
+                    </div>
+                    <div style="margin-top: 0.8rem;">
+                        <strong>Tłumaczenia (${word.translations.length}):</strong>
+                        ${word.translations.length > 0 ? 
+                            '<ul style="margin-top: 0.5rem; padding-left: 1.5rem;">' + 
+                            word.translations.map(t => `<li>${t.text} (głosy: ${t.votes})</li>`).join('') + 
+                            '</ul>' : 
+                            '<p style="font-style: italic; color: #888;">Brak tłumaczeń</p>'
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(wordElement);
+            });
+        }
+
+        // Wybór słowa do wyświetlenia szczegółów
+        function selectWord(wordId) {
+            selectedWordId = wordId;
+            const word = words.find(w => w.id === wordId);
+            
+            if (!word) return;
+            
+            document.getElementById('word-details').style.display = 'block';
+            
+            let translationsHtml = '';
+            if (word.translations && word.translations.length > 0) {
+                // Sortuj tłumaczenia według liczby głosów (malejąco)
+                const sortedTranslations = [...word.translations].sort((a, b) => b.votes - a.votes);
+                
+                translationsHtml = '<div class="translations-list">';
+                sortedTranslations.forEach(trans => {
+                    const userHasVoted = userVotes[trans.id] || false;
+                    const creatorVoteBadge = trans.creatorVote ? ' <span class="creator-badge">Twórca</span>' : '';
+                    
+                    translationsHtml += `
+                        <div class="translation-item">
+                            <div class="translation-header">
+                                <div class="translation-text">${trans.text}</div>
+                                <div class="translation-lang">${getLanguageName(word.targetLang)}</div>
+                            </div>
+                            ${trans.explanation ? `<div class="additional-explanation">${trans.explanation}</div>` : ''}
+                            <div class="translation-actions">
+                                <button class="vote-btn ${userHasVoted ? 'active' : ''}" data-translation-id="${trans.id}">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </button>
+                                <div class="vote-count">${trans.votes}</div>
+                                ${creatorVoteBadge}
+                                <div style="margin-left: auto; font-size: 0.8rem; color: #777;">
+                                    dodane przez: ${trans.createdBy}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                translationsHtml += '</div>';
+            } else {
+                translationsHtml = '<p style="font-style: italic; color: #888; text-align: center; padding: 2rem;">Brak tłumaczeń. Bądź pierwszy który zaproponuje tłumaczenie!</p>';
+            }
+            
+            document.getElementById('selected-word-details').innerHTML = `
+                <div class="word-header">
+                    <div class="word-text">${word.text}</div>
+                    <div class="word-lang">${getLanguageName(word.sourceLang)} → ${getLanguageName(word.targetLang)}</div>
+                </div>
+                ${word.explanation ? `<p><i>${word.explanation}</i></p>` : ''}
+                <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                    Dodane przez: ${word.createdBy} • ${word.createdAt}
+                </div>
+                <h3 style="margin-top: 1.5rem;">Proponowane tłumaczenia:</h3>
+                ${translationsHtml}
+            `;
+            
+            // Dodaj obsługę głosowania w szczegółach
+            document.querySelectorAll('#selected-word-details .vote-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const translationId = parseInt(this.getAttribute('data-translation-id'));
+                    voteForTranslation(translationId);
+                });
+            });
+            
+            // Przewiń do sekcji szczegółów
+            document.getElementById('word-details').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Dodawanie nowego słowa
+        function addNewWord() {
+            const wordText = document.getElementById('word-text').value.trim();
+            const explanation = document.getElementById('word-explanation').value.trim();
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+            
+            if (!wordText) {
+                alert('Proszę wpisać słowo lub zwrot');
+                return;
+            }
+            
+            // Sprawdź czy słowo już istnieje
+            const existingWord = words.find(w => 
+                w.text.toLowerCase() === wordText.toLowerCase() && 
+                w.sourceLang === sourceLang && 
+                w.targetLang === targetLang
+            );
+            
+            if (existingWord) {
+                alert('To słowo już istnieje w bazie!');
+                return;
+            }
+            
+            // Utwórz nowe słowo
+            const newWord = {
+                id: words.length > 0 ? Math.max(...words.map(w => w.id)) + 1 : 1,
+                text: wordText,
+                sourceLang: sourceLang,
+                targetLang: targetLang,
+                explanation: explanation,
+                status: "pending",
+                createdAt: new Date().toISOString().split('T')[0],
+                createdBy: currentUser,
+                translations: []
+            };
+            
+            words.push(newWord);
+            
+            // Zapisz w localStorage (w rzeczywistej aplikacji - wysłanie do serwera)
+            saveData();
+            
+            // Wyczyść formularz
+            document.getElementById('add-word-form').reset();
+            
+            // Odśwież listy
+            loadPendingWords();
+            loadAllWords();
+            
+            // Powiadomienie
+            alert('Słowo zostało dodane i oczekuje na moderację!');
+            
+            // Jeśli użytkownik jest twórcą, automatycznie zaakceptuj
+            if (currentUser === 'creator') {
+                setTimeout(() => {
+                    acceptWord(newWord.id);
+                }, 500);
+            }
+        }
+
+        // Dodawanie tłumaczenia
+        function addTranslation() {
+            if (!selectedWordId) {
+                alert('Proszę najpierw wybrać słowo/zwrot');
+                return;
+            }
+            
+            const translationText = document.getElementById('translation-text').value.trim();
+            const additionalExplanation = document.getElementById('additional-explanation').value.trim();
+            
+            if (!translationText) {
+                alert('Proszę wpisać tłumaczenie');
+                return;
+            }
+            
+            const word = words.find(w => w.id === selectedWordId);
+            if (!word) {
+                alert('Wybrane słowo nie istnieje');
+                return;
+            }
+            
+            // Sprawdź czy tłumaczenie już istnieje
+            const existingTranslation = word.translations.find(t => 
+                t.text.toLowerCase() === translationText.toLowerCase()
+            );
+            
+            if (existingTranslation) {
+                alert('To tłumaczenie już istnieje!');
+                return;
+            }
+            
+            // Utwórz nowe tłumaczenie
+            const newTranslation = {
+                id: word.translations.length > 0 ? Math.max(...word.translations.map(t => t.id)) + 1 : 1,
+                text: translationText,
+                explanation: additionalExplanation,
+                votes: 0,
+                creatorVote: currentUser === 'creator',
+                createdBy: currentUser
+            };
+            
+            word.translations.push(newTranslation);
+            
+            // Jeśli twórca dodał tłumaczenie, automatycznie zagłosuj
+            if (currentUser === 'creator') {
+                userVotes[newTranslation.id] = true;
+                newTranslation.votes = 1;
+            }
+            
+            // Zapisz dane
+            saveData();
+            
+            // Wyczyść pola formularza
+            document.getElementById('translation-text').value = '';
+            document.getElementById('additional-explanation').value = '';
+            
+            // Odśwież wyświetlane dane
+            loadAcceptedWords();
+            selectWord(selectedWordId);
+            
+            // Powiadomienie
+            alert('Tłumaczenie zostało dodane!');
+        }
+
+        // Głosowanie na tłumaczenie
+        function voteForTranslation(translationId) {
+            // Znajdź tłumaczenie
+            let translation = null;
+            let wordForTranslation = null;
+            
+            for (const word of words) {
+                translation = word.translations.find(t => t.id === translationId);
+                if (translation) {
+                    wordForTranslation = word;
+                    break;
+                }
+            }
+            
+            if (!translation) return;
+            
+            // Sprawdź czy użytkownik już głosował
+            if (userVotes[translationId]) {
+                // Usuń głos
+                translation.votes--;
+                userVotes[translationId] = false;
+                
+                // Jeśli to głos twórcy, oznacz
+                if (currentUser === 'creator') {
+                    translation.creatorVote = false;
+                }
+            } else {
+                // Dodaj głos
+                translation.votes++;
+                userVotes[translationId] = true;
+                
+                // Jeśli głosuje twórca, oznacz
+                if (currentUser === 'creator') {
+                    translation.creatorVote = true;
+                }
+            }
+            
+            // Zapisz dane
+            saveData();
+            
+            // Odśwież wyświetlane dane
+            loadAcceptedWords();
+            
+            // Jeśli szczegóły są otwarte, odśwież je też
+            if (selectedWordId === wordForTranslation.id) {
+                selectWord(selectedWordId);
+            }
+        }
+
+        // Akceptacja słowa przez twórcę
+        function acceptWord(wordId) {
+            const wordIndex = words.findIndex(w => w.id === wordId);
+            if (wordIndex === -1) return;
+            
+            words[wordIndex].status = 'accepted';
+            saveData();
+            
+            // Odśwież listy
+            loadPendingWords();
+            loadAllWords();
+            loadAcceptedWords();
+            
+            alert('Słowo zostało zaakceptowane i jest teraz widoczne publicznie!');
+        }
+
+        // Odrzucenie słowa przez twórcę
+        function rejectWord(wordId) {
+            if (!confirm('Czy na pewno chcesz odrzucić to słowo? Operacji nie można cofnąć.')) {
+                return;
+            }
+            
+            const wordIndex = words.findIndex(w => w.id === wordId);
+            if (wordIndex === -1) return;
+            
+            words.splice(wordIndex, 1);
+            saveData();
+            
+            // Odśwież listy
+            loadPendingWords();
+            loadAllWords();
+            loadAcceptedWords();
+            
+            alert('Słowo zostało odrzucone i usunięte z systemu!');
+        }
+
+        // Przełączanie zakładek
+        function switchTab(tabId) {
+            // Aktualizuj aktywne zakładki
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Pokaż odpowiednią zawartość
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            
+            // Odśwież zawartość jeśli potrzeba
+            if (tabId === 'all') {
+                loadAllWords();
+            }
+        }
+
+        // Zapisywanie danych do localStorage
+        function saveData() {
+            localStorage.setItem('translationWords', JSON.stringify(words));
+            localStorage.setItem('userVotes', JSON.stringify(userVotes));
+        }
+
+        // Pobieranie nazwy języka z kodu
+        function getLanguageName(code) {
+            const languages = {
+                'en': 'ANG',
+                'pl': 'POL',
+                'de': 'DEU',
+                'fr': 'FRA',
+                'es': 'ESP',
+                'it': 'ITA'
+            };
+            return languages[code] || code.toUpperCase();
+        }
+
+        // Wyświetlanie komunikatu dla twórcy
+        function showCreatorMessage() {
+            alert('Witaj Twórco! Twoje głosy będą oznaczone złotą odznaką "Twórca". Możesz też dodawać słowa, które będą automatycznie akceptowane.');
+        }
+
+        // Załaduj dane z localStorage jeśli istnieją
+        const savedWords = localStorage.getItem('translationWords');
+        if (savedWords) {
+            words = JSON.parse(savedWords);
+        }
+    </script>
+</body>
+</html>
