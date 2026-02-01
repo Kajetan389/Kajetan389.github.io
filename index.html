@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tłumaczenia Społecznościowe</title>
+    <title>Tłumaczenia Społecznościowe - Panel Moderacji</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -31,12 +31,183 @@
             background-color: #f5f7fb;
             color: var(--dark-color);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        /* Styl ekranu logowania */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .login-container h1 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-container .logo {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #777;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .login-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .role-select {
+            margin-bottom: 1.2rem;
+        }
+
+        .role-select label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .role-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .admin-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: var(--border-radius);
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        /* Styl głównej aplikacji */
+        .app-screen {
+            display: none;
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .user-role {
+            background-color: #e9ecef;
+            color: #666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .creator-role {
+            background-color: var(--creator-color);
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: #f8f9fa;
+            color: var(--danger-color);
+            border: 1px solid #ddd;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--danger-color);
+            color: white;
         }
 
         header {
@@ -161,6 +332,13 @@
 
         .language-selector {
             flex: 1;
+        }
+
+        .language-error {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
         }
 
         .words-list {
@@ -381,6 +559,40 @@
             color: #155724;
         }
 
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .admin-only {
+            display: none;
+        }
+
+        .admin-only.visible {
+            display: block;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -389,109 +601,241 @@
             .language-selectors {
                 flex-direction: column;
             }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-language"></i> Tłumaczenia Społecznościowe</h1>
-            <p>Wspólnie tłumaczmy słowa i zwroty między językami</p>
-        </header>
-
-        <div class="language-selectors">
-            <div class="language-selector">
-                <label for="source-lang">Tłumacz z języka:</label>
-                <select id="source-lang">
-                    <option value="en">Angielski (EN)</option>
-                    <option value="pl">Polski (PL)</option>
-                    <option value="de">Niemiecki (DE)</option>
-                    <option value="fr">Francuski (FR)</option>
-                    <option value="es">Hiszpański (ES)</option>
-                    <option value="it">Włoski (IT)</option>
-                </select>
+    <!-- EKRAN LOGOWANIA -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="logo">
+                <i class="fas fa-language"></i>
             </div>
-            <div class="language-selector">
-                <label for="target-lang">Tłumacz na język:</label>
-                <select id="target-lang">
-                    <option value="pl">Polski (PL)</option>
-                    <option value="en">Angielski (EN)</option>
-                    <option value="de">Niemiecki (DE)</option>
-                    <option value="fr">Francuski (FR)</option>
-                    <option value="es">Hiszpański (ES)</option>
-                    <option value="it">Włoski (IT)</option>
-                </select>
+            <h1>Tłumaczenia Społecznościowe</h1>
+            
+            <div class="login-tabs">
+                <div class="login-tab active" data-tab="login">Zaloguj się</div>
+                <div class="login-tab" data-tab="register">Zarejestruj się</div>
             </div>
-        </div>
-
-        <div class="main-content">
-            <div class="left-column">
-                <div class="card">
-                    <h2><i class="fas fa-plus-circle"></i> Dodaj nowe słowo/zwrot</h2>
-                    <form id="add-word-form">
-                        <div class="form-group">
-                            <label for="word-text">Słowo lub zwrot:</label>
-                            <input type="text" id="word-text" placeholder="np. vessel, kissable, larger than life" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="word-explanation">Wyjaśnienie/kontekst (opcjonalnie):</label>
-                            <textarea id="word-explanation" placeholder="Możesz dodać wyjaśnienie lub kontekst użycia..."></textarea>
-                        </div>
-                        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Prześlij do moderacji</button>
-                    </form>
+            
+            <!-- Formularz logowania -->
+            <div id="login-form" class="login-form active">
+                <div class="form-group">
+                    <label for="login-username">Nazwa użytkownika:</label>
+                    <input type="text" id="login-username" placeholder="Wpisz swoją nazwę użytkownika" required>
                 </div>
-
-                <div class="card moderation-panel">
-                    <h2><i class="fas fa-user-shield"></i> Panel moderacji (Twórca)</h2>
-                    <div class="tabs">
-                        <div class="tab active" data-tab="pending">Oczekujące</div>
-                        <div class="tab" data-tab="all">Wszystkie</div>
-                    </div>
-                    
-                    <div class="tab-content active" id="pending-tab">
-                        <div id="pending-words-list" class="words-list"></div>
-                    </div>
-                    
-                    <div class="tab-content" id="all-tab">
-                        <div id="all-words-list" class="words-list"></div>
-                    </div>
+                <div class="form-group">
+                    <label for="login-password">Hasło:</label>
+                    <input type="password" id="login-password" placeholder="Wpisz swoje hasło" required>
                 </div>
+                <div id="login-message" class="message"></div>
+                <button id="login-btn" class="btn" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Zaloguj się
+                </button>
             </div>
-
-            <div class="right-column">
-                <div class="card">
-                    <h2><i class="fas fa-list"></i> Zaakceptowane słowa/zwroty</h2>
-                    <div id="accepted-words-list" class="words-list"></div>
+            
+            <!-- Formularz rejestracji -->
+            <div id="register-form" class="login-form">
+                <div class="form-group">
+                    <label for="register-username">Nazwa użytkownika:</label>
+                    <input type="text" id="register-username" placeholder="Wybierz nazwę użytkownika" required>
                 </div>
-
-                <div class="card" id="word-details" style="display: none;">
-                    <h2><i class="fas fa-info-circle"></i> Szczegóły słowa/zwrotu</h2>
-                    <div id="selected-word-details"></div>
-                    
-                    <div class="form-group" style="margin-top: 2rem;">
-                        <h3><i class="fas fa-comment-alt"></i> Zaproponuj tłumaczenie</h3>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                            <input type="text" id="translation-text" placeholder="Twoje tłumaczenie..." style="flex: 1;">
-                            <button id="add-translation-btn" class="btn"><i class="fas fa-plus"></i> Dodaj</button>
+                <div class="form-group">
+                    <label for="register-password">Hasło:</label>
+                    <input type="password" id="register-password" placeholder="Wybierz bezpieczne hasło" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Potwierdź hasło:</label>
+                    <input type="password" id="register-password-confirm" placeholder="Powtórz hasło" required>
+                </div>
+                
+                <div class="role-select">
+                    <label>Typ konta:</label>
+                    <div class="role-options">
+                        <div class="role-option active" data-role="user">
+                            <i class="fas fa-user"></i><br>
+                            Zwykły użytkownik
                         </div>
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label for="additional-explanation">Dodatkowe wyjaśnienie (opcjonalnie):</label>
-                            <textarea id="additional-explanation" placeholder="Np. to słowo oznacza ucieleśnienie się czyjejś duszy w czyimś ciele..."></textarea>
+                        <div class="role-option" data-role="creator">
+                            <i class="fas fa-crown"></i><br>
+                            Twórca/Moderator
                         </div>
                     </div>
                 </div>
+                
+                <div id="creator-note" class="admin-note" style="display: none;">
+                    <strong><i class="fas fa-lock"></i> Dostęp tylko dla twórcy</strong><br>
+                    Aby zarejestrować się jako twórca, musisz znać kod dostępu: <strong>ADMIN2024</strong>
+                </div>
+                
+                <div class="form-group">
+                    <label for="creator-code" id="creator-code-label" style="display: none;">Kod dostępu twórcy:</label>
+                    <input type="password" id="creator-code" placeholder="Wpisz kod dostępu" style="display: none;">
+                </div>
+                
+                <div id="register-message" class="message"></div>
+                <button id="register-btn" class="btn" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Zarejestruj się
+                </button>
             </div>
         </div>
+    </div>
+    
+    <!-- GŁÓWNA APLIKACJA (widoczna po zalogowaniu) -->
+    <div id="app-screen" class="app-screen">
+        <div class="container">
+            <!-- Panel użytkownika -->
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div>
+                        <div class="user-name" id="user-name">Użytkownik</div>
+                        <div class="user-role" id="user-role">Zwykły użytkownik</div>
+                    </div>
+                </div>
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Wyloguj się
+                </button>
+            </div>
+            
+            <header>
+                <h1><i class="fas fa-language"></i> Tłumaczenia Społecznościowe</h1>
+                <p>Wspólnie tłumaczmy słowa i zwroty między językami</p>
+            </header>
 
-        <footer>
-            <p>Strona do crowdsourcingu tłumaczeń &copy; 2023 | Głos twórcy strony jest oznaczony <span class="creator-badge">Twórca</span></p>
-            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Dane są przechowywane lokalnie w przeglądarce. W wersji produkcyjnej potrzebny byłby backend z bazą danych.</p>
-        </footer>
+            <div class="language-selectors">
+                <div class="language-selector">
+                    <label for="source-lang">Tłumacz z języka:</label>
+                    <select id="source-lang">
+                        <option value="en">Angielski (EN)</option>
+                        <option value="pl">Polski (PL)</option>
+                        <option value="de">Niemiecki (DE)</option>
+                        <option value="fr">Francuski (FR)</option>
+                        <option value="es">Hiszpański (ES)</option>
+                        <option value="it">Włoski (IT)</option>
+                    </select>
+                </div>
+                <div class="language-selector">
+                    <label for="target-lang">Tłumacz na język:</label>
+                    <select id="target-lang">
+                        <option value="pl">Polski (PL)</option>
+                        <option value="en">Angielski (EN)</option>
+                        <option value="de">Niemiecki (DE)</option>
+                        <option value="fr">Francuski (FR)</option>
+                        <option value="es">Hiszpański (ES)</option>
+                        <option value="it">Włoski (IT)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="language-error" class="language-error">
+                <i class="fas fa-exclamation-triangle"></i> Nie można tłumaczyć na ten sam język!
+            </div>
+
+            <div class="main-content">
+                <div class="left-column">
+                    <div class="card">
+                        <h2><i class="fas fa-plus-circle"></i> Dodaj nowe słowo/zwrot</h2>
+                        <form id="add-word-form">
+                            <div class="form-group">
+                                <label for="word-text">Słowo lub zwrot:</label>
+                                <input type="text" id="word-text" placeholder="np. vessel, kissable, larger than life" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="word-explanation">Wyjaśnienie/kontekst (opcjonalnie):</label>
+                                <textarea id="word-explanation" placeholder="Możesz dodać wyjaśnienie lub kontekst użycia..."></textarea>
+                            </div>
+                            <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Prześlij do moderacji</button>
+                        </form>
+                    </div>
+
+                    <!-- PANEL MODERACJI - WIDOCZNY TYLKO DLA TWÓRCY -->
+                    <div id="moderation-panel" class="card moderation-panel admin-only">
+                        <h2><i class="fas fa-user-shield"></i> Panel moderacji (Twórca)</h2>
+                        <div class="tabs">
+                            <div class="tab active" data-tab="pending">Oczekujące</div>
+                            <div class="tab" data-tab="rejected">Odrzucone</div>
+                            <div class="tab" data-tab="all">Wszystkie</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="pending-tab">
+                            <div id="pending-words-list" class="words-list"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="rejected-tab">
+                            <div id="rejected-words-list" class="words-list"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="all-tab">
+                            <div id="all-words-list" class="words-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="card">
+                        <h2><i class="fas fa-list"></i> Zaakceptowane słowa/zwroty</h2>
+                        <div id="accepted-words-list" class="words-list"></div>
+                    </div>
+
+                    <div class="card" id="word-details" style="display: none;">
+                        <h2><i class="fas fa-info-circle"></i> Szczegóły słowa/zwrotu</h2>
+                        <div id="selected-word-details"></div>
+                        
+                        <div class="form-group" style="margin-top: 2rem;">
+                            <h3><i class="fas fa-comment-alt"></i> Zaproponuj tłumaczenie</h3>
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <input type="text" id="translation-text" placeholder="Twoje tłumaczenie..." style="flex: 1;">
+                                <button id="add-translation-btn" class="btn"><i class="fas fa-plus"></i> Dodaj</button>
+                            </div>
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="additional-explanation">Dodatkowe wyjaśnienie (opcjonalnie):</label>
+                                <textarea id="additional-explanation" placeholder="Np. to słowo oznacza ucieleśnienie się czyjejś duszy w czyimś ciele..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <p>Strona do crowdsourcingu tłumaczeń &copy; 2024 | Głos twórcy strony jest oznaczony <span class="creator-badge">Twórca</span></p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">Zalogowany jako: <span id="footer-user">-</span></p>
+            </footer>
+        </div>
     </div>
 
     <script>
-        // Dane demonstracyjne - w rzeczywistej aplikacji byłyby pobierane z serwera
-        let words = [
+        // ===================== SYSTEM KONT UŻYTKOWNIKÓW =====================
+        
+        // Konto twórcy/moderatora (domyślne)
+        const CREATOR_ACCESS_CODE = "ADMIN2024";
+        
+        // Pobierz użytkowników z localStorage lub utwórz domyślnych
+        let users = JSON.parse(localStorage.getItem('translationUsers')) || [
+            {
+                username: "admin",
+                password: "admin123",
+                role: "creator",
+                createdAt: new Date().toISOString()
+            },
+            {
+                username: "uzytkownik",
+                password: "haslo123",
+                role: "user",
+                createdAt: new Date().toISOString()
+            }
+        ];
+        
+        // Aktualnie zalogowany użytkownik
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        
+        // Dane aplikacji
+        let words = JSON.parse(localStorage.getItem('translationWords')) || [
             {
                 id: 1,
                 text: "vessel",
@@ -499,8 +843,8 @@
                 targetLang: "pl",
                 explanation: "",
                 status: "accepted",
-                createdAt: "2023-10-15",
-                createdBy: "użytkownik123",
+                createdAt: "2024-01-15",
+                createdBy: "uzytkownik",
                 translations: [
                     {
                         id: 1,
@@ -508,7 +852,7 @@
                         explanation: "oznacza ucieleśnienie się czyjejś duszy w czyimś ciele nie zastępując jego duszy a współżyjąc z nią",
                         votes: 5,
                         creatorVote: true,
-                        createdBy: "tłumacz456"
+                        createdBy: "admin"
                     },
                     {
                         id: 2,
@@ -516,7 +860,7 @@
                         explanation: "",
                         votes: 2,
                         creatorVote: false,
-                        createdBy: "użytkownik789"
+                        createdBy: "uzytkownik"
                     }
                 ]
             },
@@ -527,8 +871,8 @@
                 targetLang: "pl",
                 explanation: "",
                 status: "accepted",
-                createdAt: "2023-10-16",
-                createdBy: "user_anna",
+                createdAt: "2024-01-16",
+                createdBy: "uzytkownik",
                 translations: [
                     {
                         id: 3,
@@ -536,7 +880,7 @@
                         explanation: "",
                         votes: 8,
                         creatorVote: true,
-                        createdBy: "tłumacz_jan"
+                        createdBy: "admin"
                     },
                     {
                         id: 4,
@@ -544,7 +888,7 @@
                         explanation: "",
                         votes: 3,
                         creatorVote: false,
-                        createdBy: "użytkownikXYZ"
+                        createdBy: "nowy_uzytkownik"
                     }
                 ]
             },
@@ -555,8 +899,8 @@
                 targetLang: "pl",
                 explanation: "wyrażenie opisujące kogoś lub coś wyjątkowego, imponującego",
                 status: "accepted",
-                createdAt: "2023-10-17",
-                createdBy: "english_lover",
+                createdAt: "2024-01-17",
+                createdBy: "uzytkownik",
                 translations: [
                     {
                         id: 5,
@@ -564,7 +908,7 @@
                         explanation: "",
                         votes: 7,
                         creatorVote: true,
-                        createdBy: "poliglota88"
+                        createdBy: "admin"
                     },
                     {
                         id: 6,
@@ -572,7 +916,7 @@
                         explanation: "dosłowne tłumaczenie, również używane",
                         votes: 4,
                         creatorVote: false,
-                        createdBy: "tłumacz_nowy"
+                        createdBy: "tłumacz"
                     }
                 ]
             },
@@ -583,62 +927,177 @@
                 targetLang: "pl",
                 explanation: "szczęśliwy traf, przypadkowe odkrycie czegoś wartościowego",
                 status: "pending",
-                createdAt: "2023-10-18",
+                createdAt: "2024-01-18",
                 createdBy: "word_explorer",
                 translations: []
             }
         ];
-
-        // Pobierz ustawienia z localStorage lub ustaw domyślne
-        let currentUser = localStorage.getItem('translationAppUser') || 'anonymous_' + Math.floor(Math.random() * 10000);
+        
         let userVotes = JSON.parse(localStorage.getItem('userVotes')) || {};
         let selectedWordId = null;
-
-        // Inicjalizacja aplikacji
-        document.addEventListener('DOMContentLoaded', function() {
-            // Zapisz użytkownika jeśli nie istnieje
-            if (!localStorage.getItem('translationAppUser')) {
-                localStorage.setItem('translationAppUser', currentUser);
+        
+        // ===================== FUNKCJE SYSTEMU LOGOWANIA =====================
+        
+        // Sprawdź czy użytkownik jest zalogowany przy ładowaniu strony
+        function checkLoginStatus() {
+            if (currentUser) {
+                showAppScreen();
+            } else {
+                showLoginScreen();
+            }
+        }
+        
+        // Pokaż ekran logowania
+        function showLoginScreen() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app-screen').style.display = 'none';
+            
+            // Reset formularzy
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-password-confirm').value = '';
+            document.getElementById('creator-code').value = '';
+            
+            // Ukryj komunikaty
+            document.getElementById('login-message').className = 'message';
+            document.getElementById('register-message').className = 'message';
+        }
+        
+        // Pokaż główną aplikację
+        function showAppScreen() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'block';
+            
+            // Ustaw informacje o użytkowniku
+            document.getElementById('user-name').textContent = currentUser.username;
+            document.getElementById('footer-user').textContent = currentUser.username;
+            
+            // Ustaw awatar (pierwsza litera nazwy)
+            document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            // Ustaw rolę użytkownika
+            const userRoleElement = document.getElementById('user-role');
+            if (currentUser.role === 'creator') {
+                userRoleElement.textContent = 'Twórca/Moderator';
+                userRoleElement.classList.add('creator-role');
+                
+                // Pokaż panel moderacji tylko dla twórcy
+                document.getElementById('moderation-panel').classList.add('visible');
+            } else {
+                userRoleElement.textContent = 'Zwykły użytkownik';
+                userRoleElement.classList.remove('creator-role');
+                
+                // Ukryj panel moderacji
+                document.getElementById('moderation-panel').classList.remove('visible');
             }
             
-            // Ustaw nasłuchiwanie zdarzeń
-            setupEventListeners();
-            
-            // Załaduj dane
+            // Załaduj dane aplikacji
             loadAcceptedWords();
             loadPendingWords();
+            loadRejectedWords();
             loadAllWords();
             
-            // Wyświetl komunikat powitalny dla twórcy
-            if (currentUser === 'creator') {
-                showCreatorMessage();
-            }
-        });
-
-        // Konfiguracja nasłuchiwania zdarzeń
-        function setupEventListeners() {
-            // Formularz dodawania nowego słowa
-            document.getElementById('add-word-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addNewWord();
-            });
-            
-            // Przycisk dodawania tłumaczenia
-            document.getElementById('add-translation-btn').addEventListener('click', addTranslation);
-            
-            // Filtry językowe
-            document.getElementById('source-lang').addEventListener('change', loadAcceptedWords);
-            document.getElementById('target-lang').addEventListener('change', loadAcceptedWords);
-            
-            // Taby w panelu moderacji
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    switchTab(tabId);
-                });
-            });
+            // Sprawdź czy języki są takie same
+            checkLanguages();
         }
-
+        
+        // Logowanie użytkownika
+        function loginUser(username, password) {
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showAppScreen();
+                return true;
+            } else {
+                showMessage('login-message', 'Nieprawidłowa nazwa użytkownika lub hasło!', 'error');
+                return false;
+            }
+        }
+        
+        // Rejestracja nowego użytkownika
+        function registerUser(username, password, role, creatorCode = '') {
+            // Walidacja
+            if (users.find(u => u.username === username)) {
+                showMessage('register-message', 'Nazwa użytkownika jest już zajęta!', 'error');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showMessage('register-message', 'Hasło musi mieć co najmniej 6 znaków!', 'error');
+                return false;
+            }
+            
+            // Sprawdź czy próbuje zarejestrować się jako twórca
+            if (role === 'creator') {
+                if (creatorCode !== CREATOR_ACCESS_CODE) {
+                    showMessage('register-message', 'Nieprawidłowy kod dostępu dla twórcy!', 'error');
+                    return false;
+                }
+            }
+            
+            // Utwórz nowego użytkownika
+            const newUser = {
+                username: username,
+                password: password,
+                role: role,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('translationUsers', JSON.stringify(users));
+            
+            // Zaloguj nowego użytkownika
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            showAppScreen();
+            return true;
+        }
+        
+        // Wylogowanie użytkownika
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLoginScreen();
+        }
+        
+        // Wyświetlanie komunikatów
+        function showMessage(elementId, text, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.className = `message ${type}`;
+            
+            // Ukryj komunikat po 5 sekundach
+            if (type === 'success') {
+                setTimeout(() => {
+                    element.className = 'message';
+                }, 5000);
+            }
+        }
+        
+        // ===================== FUNKCJE APLIKACJI =====================
+        
+        // Sprawdź czy język źródłowy i docelowy są takie same
+        function checkLanguages() {
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+            const errorElement = document.getElementById('language-error');
+            
+            if (sourceLang === targetLang) {
+                errorElement.style.display = 'block';
+                document.getElementById('add-word-form').querySelector('button').disabled = true;
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                document.getElementById('add-word-form').querySelector('button').disabled = false;
+                return true;
+            }
+        }
+        
         // Ładowanie zaakceptowanych słów
         function loadAcceptedWords() {
             const sourceLang = document.getElementById('source-lang').value;
@@ -734,7 +1193,7 @@
                 container.appendChild(wordElement);
             });
         }
-
+        
         // Ładowanie słów oczekujących na moderację
         function loadPendingWords() {
             const pendingWords = words.filter(word => word.status === 'pending');
@@ -772,6 +1231,9 @@
                         <button class="btn btn-danger btn-reject" data-id="${word.id}">
                             <i class="fas fa-times"></i> Odrzuć
                         </button>
+                        <button class="btn btn-danger btn-delete" data-id="${word.id}" style="margin-left: auto;">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
                     </div>
                 `;
                 
@@ -784,16 +1246,81 @@
                     rejectWord(word.id);
                 });
                 
+                wordElement.querySelector('.btn-delete').addEventListener('click', function() {
+                    deleteWord(word.id);
+                });
+                
                 container.appendChild(wordElement);
             });
         }
-
+        
+        // Ładowanie odrzuconych słów
+        function loadRejectedWords() {
+            const rejectedWords = words.filter(word => word.status === 'rejected');
+            const container = document.getElementById('rejected-words-list');
+            
+            if (rejectedWords.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-ban"></i>
+                        <h3>Brak odrzuconych słów</h3>
+                        <p>Nie odrzucono jeszcze żadnych słów</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            rejectedWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                wordElement.style.borderLeftColor = 'var(--danger-color)';
+                wordElement.innerHTML = `
+                    <div class="word-header">
+                        <div class="word-text">${word.text}</div>
+                        <div>
+                            <span class="status-badge status-rejected">Odrzucone</span>
+                            <div class="word-lang">${getLanguageName(word.sourceLang)} → ${getLanguageName(word.targetLang)}</div>
+                        </div>
+                    </div>
+                    ${word.explanation ? `<p><i>${word.explanation}</i></p>` : ''}
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                        Dodane przez: ${word.createdBy} • ${word.createdAt} • Odrzucone przez moderatora
+                    </div>
+                    <div class="moderation-actions">
+                        <button class="btn btn-success btn-restore" data-id="${word.id}">
+                            <i class="fas fa-undo"></i> Przywróć do oczekujących
+                        </button>
+                        <button class="btn btn-danger btn-delete" data-id="${word.id}" style="margin-left: auto;">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>
+                `;
+                
+                // Dodaj obsługę przycisków
+                wordElement.querySelector('.btn-restore').addEventListener('click', function() {
+                    restoreWord(word.id);
+                });
+                
+                wordElement.querySelector('.btn-delete').addEventListener('click', function() {
+                    deleteWord(word.id);
+                });
+                
+                container.appendChild(wordElement);
+            });
+        }
+        
         // Ładowanie wszystkich słów (dla panelu twórcy)
         function loadAllWords() {
             const container = document.getElementById('all-words-list');
             const allWords = [...words].sort((a, b) => {
-                if (a.status === b.status) return b.id - a.id;
-                return a.status === 'pending' ? -1 : 1;
+                // Najpierw status: pending, rejected, accepted
+                const statusOrder = {pending: 0, rejected: 1, accepted: 2};
+                if (statusOrder[a.status] !== statusOrder[b.status]) {
+                    return statusOrder[a.status] - statusOrder[b.status];
+                }
+                return b.id - a.id; // Nowe na górze
             });
             
             if (allWords.length === 0) {
@@ -810,8 +1337,21 @@
             container.innerHTML = '';
             
             allWords.forEach(word => {
-                const statusClass = word.status === 'pending' ? 'status-pending' : 'status-accepted';
-                const statusText = word.status === 'pending' ? 'Oczekujące' : 'Zaakceptowane';
+                let statusClass, statusText;
+                switch(word.status) {
+                    case 'pending': 
+                        statusClass = 'status-pending'; 
+                        statusText = 'Oczekujące'; 
+                        break;
+                    case 'accepted': 
+                        statusClass = 'status-accepted'; 
+                        statusText = 'Zaakceptowane'; 
+                        break;
+                    case 'rejected': 
+                        statusClass = 'status-rejected'; 
+                        statusText = 'Odrzucone'; 
+                        break;
+                }
                 
                 const wordElement = document.createElement('div');
                 wordElement.className = 'word-item';
@@ -836,12 +1376,41 @@
                             '<p style="font-style: italic; color: #888;">Brak tłumaczeń</p>'
                         }
                     </div>
+                    ${currentUser.role === 'creator' ? `
+                    <div class="moderation-actions">
+                        ${word.status !== 'accepted' ? `<button class="btn btn-success btn-accept" data-id="${word.id}" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                            <i class="fas fa-check"></i> Zaakceptuj
+                        </button>` : ''}
+                        ${word.status !== 'rejected' ? `<button class="btn btn-warning btn-reject" data-id="${word.id}" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                            <i class="fas fa-times"></i> Odrzuć
+                        </button>` : ''}
+                        ${word.status === 'rejected' ? `<button class="btn btn-success btn-restore" data-id="${word.id}" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                            <i class="fas fa-undo"></i> Przywróć
+                        </button>` : ''}
+                        <button class="btn btn-danger btn-delete" data-id="${word.id}" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; margin-left: auto;">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>
+                    ` : ''}
                 `;
+                
+                // Dodaj obsługę przycisków (tylko dla twórcy)
+                if (currentUser.role === 'creator') {
+                    const acceptBtn = wordElement.querySelector('.btn-accept');
+                    const rejectBtn = wordElement.querySelector('.btn-reject');
+                    const restoreBtn = wordElement.querySelector('.btn-restore');
+                    const deleteBtn = wordElement.querySelector('.btn-delete');
+                    
+                    if (acceptBtn) acceptBtn.addEventListener('click', function() { acceptWord(word.id); });
+                    if (rejectBtn) rejectBtn.addEventListener('click', function() { rejectWord(word.id); });
+                    if (restoreBtn) restoreBtn.addEventListener('click', function() { restoreWord(word.id); });
+                    if (deleteBtn) deleteBtn.addEventListener('click', function() { deleteWord(word.id); });
+                }
                 
                 container.appendChild(wordElement);
             });
         }
-
+        
         // Wybór słowa do wyświetlenia szczegółów
         function selectWord(wordId) {
             selectedWordId = wordId;
@@ -910,9 +1479,15 @@
             // Przewiń do sekcji szczegółów
             document.getElementById('word-details').scrollIntoView({ behavior: 'smooth' });
         }
-
+        
         // Dodawanie nowego słowa
         function addNewWord() {
+            // Sprawdź czy języki są różne
+            if (!checkLanguages()) {
+                alert('Nie można tłumaczyć na ten sam język! Zmień język źródłowy lub docelowy.');
+                return;
+            }
+            
             const wordText = document.getElementById('word-text').value.trim();
             const explanation = document.getElementById('word-explanation').value.trim();
             const sourceLang = document.getElementById('source-lang').value;
@@ -944,33 +1519,27 @@
                 explanation: explanation,
                 status: "pending",
                 createdAt: new Date().toISOString().split('T')[0],
-                createdBy: currentUser,
+                createdBy: currentUser.username,
                 translations: []
             };
             
             words.push(newWord);
-            
-            // Zapisz w localStorage (w rzeczywistej aplikacji - wysłanie do serwera)
             saveData();
             
             // Wyczyść formularz
             document.getElementById('add-word-form').reset();
             
             // Odśwież listy
-            loadPendingWords();
-            loadAllWords();
+            if (currentUser.role === 'creator') {
+                loadPendingWords();
+                loadAllWords();
+            }
+            loadAcceptedWords();
             
             // Powiadomienie
             alert('Słowo zostało dodane i oczekuje na moderację!');
-            
-            // Jeśli użytkownik jest twórcą, automatycznie zaakceptuj
-            if (currentUser === 'creator') {
-                setTimeout(() => {
-                    acceptWord(newWord.id);
-                }, 500);
-            }
         }
-
+        
         // Dodawanie tłumaczenia
         function addTranslation() {
             if (!selectedWordId) {
@@ -1008,14 +1577,14 @@
                 text: translationText,
                 explanation: additionalExplanation,
                 votes: 0,
-                creatorVote: currentUser === 'creator',
-                createdBy: currentUser
+                creatorVote: currentUser.role === 'creator',
+                createdBy: currentUser.username
             };
             
             word.translations.push(newTranslation);
             
             // Jeśli twórca dodał tłumaczenie, automatycznie zagłosuj
-            if (currentUser === 'creator') {
+            if (currentUser.role === 'creator') {
                 userVotes[newTranslation.id] = true;
                 newTranslation.votes = 1;
             }
@@ -1029,12 +1598,15 @@
             
             // Odśwież wyświetlane dane
             loadAcceptedWords();
+            if (currentUser.role === 'creator') {
+                loadAllWords();
+            }
             selectWord(selectedWordId);
             
             // Powiadomienie
             alert('Tłumaczenie zostało dodane!');
         }
-
+        
         // Głosowanie na tłumaczenie
         function voteForTranslation(translationId) {
             // Znajdź tłumaczenie
@@ -1058,7 +1630,7 @@
                 userVotes[translationId] = false;
                 
                 // Jeśli to głos twórcy, oznacz
-                if (currentUser === 'creator') {
+                if (currentUser.role === 'creator') {
                     translation.creatorVote = false;
                 }
             } else {
@@ -1067,7 +1639,7 @@
                 userVotes[translationId] = true;
                 
                 // Jeśli głosuje twórca, oznacz
-                if (currentUser === 'creator') {
+                if (currentUser.role === 'creator') {
                     translation.creatorVote = true;
                 }
             }
@@ -1083,9 +1655,14 @@
                 selectWord(selectedWordId);
             }
         }
-
+        
         // Akceptacja słowa przez twórcę
         function acceptWord(wordId) {
+            if (currentUser.role !== 'creator') {
+                alert('Tylko twórca może akceptować słowa!');
+                return;
+            }
+            
             const wordIndex = words.findIndex(w => w.id === wordId);
             if (wordIndex === -1) return;
             
@@ -1094,15 +1671,64 @@
             
             // Odśwież listy
             loadPendingWords();
+            loadRejectedWords();
             loadAllWords();
             loadAcceptedWords();
             
             alert('Słowo zostało zaakceptowane i jest teraz widoczne publicznie!');
         }
-
+        
         // Odrzucenie słowa przez twórcę
         function rejectWord(wordId) {
-            if (!confirm('Czy na pewno chcesz odrzucić to słowo? Operacji nie można cofnąć.')) {
+            if (currentUser.role !== 'creator') {
+                alert('Tylko twórca może odrzucać słowa!');
+                return;
+            }
+            
+            const wordIndex = words.findIndex(w => w.id === wordId);
+            if (wordIndex === -1) return;
+            
+            words[wordIndex].status = 'rejected';
+            saveData();
+            
+            // Odśwież listy
+            loadPendingWords();
+            loadRejectedWords();
+            loadAllWords();
+            loadAcceptedWords();
+            
+            alert('Słowo zostało odrzucone!');
+        }
+        
+        // Przywrócenie odrzuconego słowa
+        function restoreWord(wordId) {
+            if (currentUser.role !== 'creator') {
+                alert('Tylko twórca może przywracać słowa!');
+                return;
+            }
+            
+            const wordIndex = words.findIndex(w => w.id === wordId);
+            if (wordIndex === -1) return;
+            
+            words[wordIndex].status = 'pending';
+            saveData();
+            
+            // Odśwież listy
+            loadPendingWords();
+            loadRejectedWords();
+            loadAllWords();
+            
+            alert('Słowo zostało przywrócone do oczekujących!');
+        }
+        
+        // Usuwanie słowa przez twórcę
+        function deleteWord(wordId) {
+            if (currentUser.role !== 'creator') {
+                alert('Tylko twórca może usuwać słowa!');
+                return;
+            }
+            
+            if (!confirm('Czy na pewno chcesz trwale usunąć to słowo? Operacji nie można cofnąć.')) {
                 return;
             }
             
@@ -1114,12 +1740,19 @@
             
             // Odśwież listy
             loadPendingWords();
+            loadRejectedWords();
             loadAllWords();
             loadAcceptedWords();
             
-            alert('Słowo zostało odrzucone i usunięte z systemu!');
+            // Jeśli usunięto wybrane słowo, ukryj szczegóły
+            if (selectedWordId === wordId) {
+                document.getElementById('word-details').style.display = 'none';
+                selectedWordId = null;
+            }
+            
+            alert('Słowo zostało trwale usunięte z systemu!');
         }
-
+        
         // Przełączanie zakładek
         function switchTab(tabId) {
             // Aktualizuj aktywne zakładki
@@ -1138,17 +1771,20 @@
             document.getElementById(`${tabId}-tab`).classList.add('active');
             
             // Odśwież zawartość jeśli potrzeba
-            if (tabId === 'all') {
+            if (tabId === 'rejected') {
+                loadRejectedWords();
+            } else if (tabId === 'all') {
                 loadAllWords();
             }
         }
-
+        
         // Zapisywanie danych do localStorage
         function saveData() {
             localStorage.setItem('translationWords', JSON.stringify(words));
             localStorage.setItem('userVotes', JSON.stringify(userVotes));
+            localStorage.setItem('translationUsers', JSON.stringify(users));
         }
-
+        
         // Pobieranie nazwy języka z kodu
         function getLanguageName(code) {
             const languages = {
@@ -1161,18 +1797,143 @@
             };
             return languages[code] || code.toUpperCase();
         }
-
-        // Wyświetlanie komunikatu dla twórcy
-        function showCreatorMessage() {
-            alert('Witaj Twórco! Twoje głosy będą oznaczone złotą odznaką "Twórca". Możesz też dodawać słowa, które będą automatycznie akceptowane.');
-        }
-
-        // Załaduj dane z localStorage jeśli istnieją
-        const savedWords = localStorage.getItem('translationWords');
-        if (savedWords) {
-            words = JSON.parse(savedWords);
-        }
+        
+        // ===================== INICJALIZACJA =====================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sprawdź stan logowania
+            checkLoginStatus();
+            
+            // ===== OBSŁUGA LOGOWANIA =====
+            
+            // Przełączanie między loginem a rejestracją
+            document.querySelectorAll('.login-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Zmień aktywną zakładkę
+                    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Pokaż odpowiedni formularz
+                    document.getElementById('login-form').classList.remove('active');
+                    document.getElementById('register-form').classList.remove('active');
+                    document.getElementById(`${tabId}-form`).classList.add('active');
+                    
+                    // Ukryj komunikaty
+                    document.getElementById('login-message').className = 'message';
+                    document.getElementById('register-message').className = 'message';
+                });
+            });
+            
+            // Wybór roli w rejestracji
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const role = this.getAttribute('data-role');
+                    
+                    // Zmień aktywną opcję
+                    document.querySelectorAll('.role-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Pokaż/ukryj pole kodu dostępu dla twórcy
+                    const creatorNote = document.getElementById('creator-note');
+                    const creatorCodeLabel = document.getElementById('creator-code-label');
+                    const creatorCodeInput = document.getElementById('creator-code');
+                    
+                    if (role === 'creator') {
+                        creatorNote.style.display = 'block';
+                        creatorCodeLabel.style.display = 'block';
+                        creatorCodeInput.style.display = 'block';
+                        creatorCodeInput.required = true;
+                    } else {
+                        creatorNote.style.display = 'none';
+                        creatorCodeLabel.style.display = 'none';
+                        creatorCodeInput.style.display = 'none';
+                        creatorCodeInput.required = false;
+                    }
+                });
+            });
+            
+            // Logowanie
+            document.getElementById('login-btn').addEventListener('click', function() {
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value.trim();
+                
+                if (!username || !password) {
+                    showMessage('login-message', 'Wypełnij wszystkie pola!', 'error');
+                    return;
+                }
+                
+                loginUser(username, password);
+            });
+            
+            // Rejestracja
+            document.getElementById('register-btn').addEventListener('click', function() {
+                const username = document.getElementById('register-username').value.trim();
+                const password = document.getElementById('register-password').value.trim();
+                const passwordConfirm = document.getElementById('register-password-confirm').value.trim();
+                const role = document.querySelector('.role-option.active').getAttribute('data-role');
+                const creatorCode = document.getElementById('creator-code').value;
+                
+                if (!username || !password || !passwordConfirm) {
+                    showMessage('register-message', 'Wypełnij wszystkie pola!', 'error');
+                    return;
+                }
+                
+                if (password !== passwordConfirm) {
+                    showMessage('register-message', 'Hasła nie są identyczne!', 'error');
+                    return;
+                }
+                
+                registerUser(username, password, role, creatorCode);
+            });
+            
+            // Wylogowanie
+            document.getElementById('logout-btn').addEventListener('click', logoutUser);
+            
+            // ===== OBSŁUGA APLIKACJI =====
+            
+            // Formularz dodawania nowego słowa
+            document.getElementById('add-word-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewWord();
+            });
+            
+            // Przycisk dodawania tłumaczenia
+            document.getElementById('add-translation-btn').addEventListener('click', addTranslation);
+            
+            // Filtry językowe
+            document.getElementById('source-lang').addEventListener('change', function() {
+                checkLanguages();
+                loadAcceptedWords();
+            });
+            
+            document.getElementById('target-lang').addEventListener('change', function() {
+                checkLanguages();
+                loadAcceptedWords();
+            });
+            
+            // Taby w panelu moderacji
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Enter w formularzach logowania
+            document.getElementById('login-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('login-btn').click();
+                }
+            });
+            
+            document.getElementById('register-password-confirm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('register-btn').click();
+                }
+            });
+        });
     </script>
 </body>
 </html>
-
